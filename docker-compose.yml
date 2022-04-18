@@ -1,0 +1,50 @@
+version: '3'
+services:
+  web:
+    image: nginx
+    container_name: webserver
+    depends_on:
+      - mysql-db
+      - php
+    links:
+      - docker-mysql
+      - php
+    volumes:
+      - ./webcontent:/var/www/html
+      - ./nginx/config:/etc/nginx/conf.d/
+      - ./nginx/logs:/var/log/nginx/
+    ports:
+      - "8080:80"
+  php:
+    image: php:fpm
+    volumes:
+      - ./content:/var/www/html
+      - ./php:/usr/local/etc/php/php.ini
+  db:
+    image: mysql
+    container_name: mysql-db
+    restart: always
+    environment:
+        - MYSQL_DATABASE=webdev
+        - MYSQL_ROOT_PASSWORD=DO_NOT_USE_IN_PROD
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=DO_NOT_USE_IN_PROD
+    ports:
+      - "6033:3306"
+    volumes:
+      - /dbdata:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+
+volumes:
+  dbdata:

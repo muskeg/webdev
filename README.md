@@ -29,7 +29,7 @@ Ce fichier.
 
 ### content
 
-Ce dossier contient le contenu Web. Ce contenu est disponible au `http://localhost:8080`
+Ce dossier contient le contenu Web (inclus: un hello-world php).
 
 ### docker-compose.yml
 
@@ -45,6 +45,12 @@ Ce dossier contient la configuration NGINX pour un serveur http (non-ssl) et PHP
 
 Ce dossier contient les logs d'accès et d'erreurs du service NGINX
 
+### php
+
+Ce dossier contient le php.ini. Le fichier présentement est une copie de `php.ini-development`.
+
+> :warning: **Ne pas utiliser en production**. Cette configuration expose trop d'information
+
 ---
 
 ## Installation
@@ -58,7 +64,7 @@ Le moyen le plus simple d'installer les outils nécessaires pour un utilisateur 
 
 ### Docker Compose
 
-Pour lancer l'environnement:
+Pour lancer l'environnement, dans la racine du repository:
 
 ```bash
 $ docker compose up -d
@@ -71,4 +77,31 @@ $ docker compose up -d
 
 ### Contenu Web
 
+Le contenu est déposé dans le dossier `./content` et est accessible <http://localhost:8080>
 
+### Logs
+
+Bien que les logs NGINX soient exposés dans le dossier `/nginx/logs` il est possible de suivre les logs des containers facilement en utilisant la commande:
+
+`docker-compose logs -f`
+
+### MySQL
+
+Le container crée une base de données appelée `webdev` automatiquement (user: `webdev` password: `DO_NOT_USE_IN_PROD`).
+
+Le container MySQL est disponible au service Web (et aux fichiers PHP) via le réseau Docker interne:
+
+* host: `db`
+* port: `3306`
+
+Il est également possible de se connecter à la base de donnée à partir de l'ordinateur host:
+
+* host: `localhost`
+* port: `6033`
+
+L'environnement présente finalement aussi l'outil phpMyAdmin qui permet d'administrer la base de donnée via une interface Web:
+
+* phpMyAdmin: <http:localhost:8081>
+* server: `vide`, environnement configuré pour utiliser `db` par défaut
+* username: `root`
+* password: `DO_NOT_USE_IN_PROD`

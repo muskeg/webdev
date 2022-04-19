@@ -5,10 +5,12 @@
 		<title>Hello world!</title>
 	</head>
 	<body>
+        <div style="width: 60vw; margin: auto">
 <?php 
-echo 'hello world!';
+echo '<div style="font-size: 50px; margin: 20px auto;">hello world!</div>';
 phpinfo(); 
 ?>
+        </div>
 	</body>
 </html>
 
